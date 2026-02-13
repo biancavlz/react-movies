@@ -140,6 +140,20 @@ export default function App() {
 }
 
 function MovieDetails({ selectedId, onCloseMovie }) {
+  const [movie, setMovie] = useState({});
+
+  useEffect(function () {
+    async function getMovieDeatils() {
+      const res = await fetch(
+        `http://www.omdbapi.com/?apikey=${token}&i=${selectedId}`,
+      );
+      const data = await res.json();
+      setMovie(data);
+    }
+
+    getMovieDeatils();
+  }, []);
+
   return (
     <div className="details">
       <button className="btn-back" onClick={onCloseMovie}>

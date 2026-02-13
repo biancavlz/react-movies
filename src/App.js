@@ -132,17 +132,20 @@ function MovieDetails({ selectedId, onCloseMovie }) {
     Genre: genre,
   } = movie;
 
-  useEffect(function () {
-    async function getMovieDeatils() {
-      const res = await fetch(
-        `http://www.omdbapi.com/?apikey=${token}&i=${selectedId}`,
-      );
-      const data = await res.json();
-      setMovie(data);
-    }
+  useEffect(
+    function () {
+      async function getMovieDeatils() {
+        const res = await fetch(
+          `http://www.omdbapi.com/?apikey=${token}&i=${selectedId}`,
+        );
+        const data = await res.json();
+        setMovie(data);
+      }
 
-    getMovieDeatils();
-  }, []);
+      getMovieDeatils();
+    },
+    [selectedId],
+  );
 
   return (
     <div className="details">

@@ -47,6 +47,8 @@ const tempWatchedData = [
   },
 ];
 
+const token = process.env.REACT_APP_API_KEY;
+
 const average = (arr) =>
   arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
 
@@ -65,7 +67,7 @@ export default function App() {
           setError("");
 
           const res = await fetch(
-            `http://www.omdbapi.com/?apikey=${KEY}&s=${query}`,
+            `http://www.omdbapi.com/?apikey=${token}&s=${query}`,
           );
 
           if (!res.ok) {

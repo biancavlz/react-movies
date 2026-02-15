@@ -31,7 +31,7 @@ const average = (arr) =>
 
 export default function App() {
   const [movies, setMovies] = useState([]);
-  const [watched, setWatched] = useState([]);
+  const [watched, setWatched] = useState(tempWatchedData);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [query, setQuery] = useState("");
@@ -171,6 +171,15 @@ function MovieDetails({ selectedId, onCloseMovie, onAddWatched, watched }) {
     [selectedId],
   );
 
+  useEffect(
+    function () {
+      if (!title) return;
+
+      document.title = `Movie | ${title}`;
+    },
+    [title],
+  );
+
   function handleAddWatchedMovie() {
     const newWatchedMovie = {
       imdbID: selectedId,
@@ -261,7 +270,7 @@ function Logo() {
   return (
     <div className="logo">
       <span role="img">🍿</span>
-      <h1>usePopcorn</h1>
+      <h1>Movies</h1>
     </div>
   );
 }
@@ -339,7 +348,6 @@ function Movie({ movie, onSelectMovie }) {
 }
 
 function WatchedSummary({ watched }) {
-  console.log(watched);
   const avgImdbRating = average(watched.map((movie) => movie.imdbRating));
   const avgUserRating = average(watched.map((movie) => movie.userRating));
   const avgRuntime = average(watched.map((movie) => movie.runtime));

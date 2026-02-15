@@ -166,6 +166,24 @@ function MovieDetails({ selectedId, onCloseMovie, onAddWatched, watched }) {
 
   useEffect(
     function () {
+      function callback(e) {
+        if (e.code === "Escape") {
+          console.log("close movie details pressing esc key");
+          onCloseMovie();
+        }
+      }
+
+      document.addEventListener("keydown", callback);
+
+      return function () {
+        document.removeEventListener("keydown", callback);
+      };
+    },
+    [onCloseMovie],
+  );
+
+  useEffect(
+    function () {
       setIsLoading(true);
       async function getMovieDeatils() {
         const res = await fetch(

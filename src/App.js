@@ -298,9 +298,20 @@ function Logo() {
 function Search({ query, setQuery }) {
   const searchField = useRef(null);
 
-  useEffect(function () {
-    searchField.current.focus();
-  }, []);
+  useEffect(
+    function () {
+      function callback(e) {
+        if (document.activeElement === searchField.current) return;
+        if (e.code === "Enter") {
+          searchField.current.focus();
+          setQuery("");
+        }
+      }
+      document.addEventListener("keydown", callback);
+      return () => document.removeEventListener("keydown", callback);
+    },
+    [setQuery],
+  );
 
   return (
     <input

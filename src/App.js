@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import StarRating from "./components/StarRating";
 
 const token = process.env.REACT_APP_API_KEY;
@@ -296,6 +296,12 @@ function Logo() {
 }
 
 function Search({ query, setQuery }) {
+  const searchField = useRef(null);
+
+  useEffect(function () {
+    searchField.current.focus();
+  }, []);
+
   return (
     <input
       className="search"
@@ -303,6 +309,7 @@ function Search({ query, setQuery }) {
       placeholder="Search movies..."
       value={query}
       onChange={(e) => setQuery(e.target.value)}
+      ref={searchField}
     />
   );
 }

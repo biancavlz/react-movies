@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import StarRating from "./components/StarRating";
 import { useMovies } from "./hooks/useMovies";
 import { useLocalStorageState } from "./hooks/useLocalStorageState";
+import { useKey } from "./hooks/useKey";
 
 const average = (arr) =>
   arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
@@ -95,23 +96,7 @@ function MovieDetails({ selectedId, onCloseMovie, onAddWatched, watched }) {
     Genre: genre,
   } = movie;
 
-  useEffect(
-    function () {
-      function callback(e) {
-        if (e.code === "Escape") {
-          console.log("close movie details pressing esc key");
-          onCloseMovie();
-        }
-      }
-
-      document.addEventListener("keydown", callback);
-
-      return function () {
-        document.removeEventListener("keydown", callback);
-      };
-    },
-    [onCloseMovie],
-  );
+  useKey("Escape", onCloseMovie);
 
   useEffect(
     function () {
@@ -242,20 +227,11 @@ function Logo() {
 function Search({ query, setQuery }) {
   const searchField = useRef(null);
 
-  useEffect(
-    function () {
-      function callback(e) {
-        if (document.activeElement === searchField.current) return;
-        if (e.code === "Enter") {
-          searchField.current.focus();
-          setQuery("");
-        }
-      }
-      document.addEventListener("keydown", callback);
-      return () => document.removeEventListener("keydown", callback);
-    },
-    [setQuery],
-  );
+  useKey("Enter", function () {
+    if (document.activeElement === searchField.current) return;
+    searchField.current.focus();
+    setQuery("");
+  });
 
   return (
     <input
